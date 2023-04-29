@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Brix</title>
+    <link rel="stylesheet" href="./style.css">"
+  </head>
+  <body>
+    <h1>Calculadora de Brix</h1>
+    <h2>Informe as massas abaixo:</h2>
+    <form>
+      <label for="massasol">Massa do açúcar soluto:</label>
+      <input type="number" id="massasol" name="massasol">
+      <br>
+      <label for="massatot">Massa total da solução:</label>
+      <input type="number" id="massatot" name="massatot">
+      <br>
+      <br>
+      <button type="button" id="calcular">Calcular</button>
+      <button type="button" id="relatorio">Gerar Relatório</button>
+    </form>
+    <br>
+    <div id="resultado"></div>
+    <script>
+      function calcularBrix() {
+        var massasol = parseFloat(document.getElementById('massasol').value);
+        var massatot = parseFloat(document.getElementById('massatot').value);
+        var brix = (massasol / massatot) * 100;
+        return brix.toFixed(2);
+      }
+
+      function exibirResultado() {
+        var brix = calcularBrix();
+        var resultado = document.getElementById('resultado');
+        resultado.innerHTML = '';
+        resultado.innerHTML += '<p>Massa do açúcar soluto: ' + document.getElementById('massasol').value + ' g</p>';
+        resultado.innerHTML += '<p>Massa total da solução: ' + document.getElementById('massatot').value + ' g</p>';
+        resultado.innerHTML += '<p>Grau Brix da solução: ' + brix + '</p>';
+      }
+
+      function gerarRelatorio() {
+        var massasol = parseFloat(document.getElementById('massasol').value);
+        var massatot = parseFloat(document.getElementById('massatot').value);
+        var brix = calcularBrix();
+        var texto = '='.repeat(30) + '\n';
+        texto += 'RELATÓRIO DE ANÁLISE DE AÇÚCAR\n';
+        texto += '='.repeat(30) + '\n';
+        texto += 'Massa do açúcar soluto: ' + massasol.toFixed(2) + ' g\n';
+        texto += 'Massa total da solução: ' + massatot.toFixed(2) + ' g\n';
+        texto += 'Grau Brix da solução: ' + brix + '\n';
+
+        // geração do relatório
+        var blob = new Blob([texto], {type: 'text/plain'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'relatorio.txt';
+        a.click();
+      }
+
+      // evento do botão "calcular"
+      document.getElementById('calcular').addEventListener('click', exibirResultado);
+
+      // evento do botão "gerar relatório"
+      document.getElementById('relatorio').addEventListener('click', gerarRelatorio);
+    </script>
+  </body>
+</html>
